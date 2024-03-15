@@ -9,6 +9,8 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+    // component: MapEditor,
+
     children:[
       {
         path: 'mapcheck',

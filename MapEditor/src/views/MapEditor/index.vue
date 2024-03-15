@@ -9,8 +9,9 @@ var polyline = null
 var polygon = null
 var polygonEditor = null;
 var polylineEditor = null
-
+// 所有静态覆盖物
 let totalPath = []
+// 当前编辑态覆盖物
 var newPath = []
 
 // 初始化
@@ -113,10 +114,10 @@ const createPolygon = () => {
 
 // 提交的数据格式
 const submitArr = () => {
-  if (type == 'polygon') {
+  if (type.value == 'polygon') {
     // targetDom.props.data.geometry = JSON.stringify([newPath])
     console.log('多边形最终数据', save());
-  } else if (type == 'polyline') {
+  } else if (type.value == 'polyline') {
     // 二维
     // targetDom.props.data.geometry = JSON.stringify(newPath)
     console.log('折线最终数据a', save());
@@ -127,6 +128,7 @@ const submitArr = () => {
 const addMarker = (e) => {
   let point = [e.lnglat.lng, e.lnglat.lat]
   let length = newPath.length
+  console.log('newPath',newPath);
 
   if (length == 0) {
     // 创建点
@@ -141,14 +143,16 @@ const addMarker = (e) => {
     newPath.push(point)
     createPolyline()
   }
-  if (type == 'polyline') {
+  if (type.value == 'polyline') {
     if (length > 1) {
       newPath = polyline.getPath()
       newPath.push(point)
       createPolyline()
     }
-  } else if (type == 'polygon') {
+  } else if (type.value == 'polygon') {
     if (length == 2) {
+      // ---
+      console.log('polyline',polyline);
       newPath = polyline.getPath()
       newPath.push(point)
       createPolygon()
@@ -211,7 +215,7 @@ const finish = () => {
 
 // 创建不编辑的覆盖物
 const onlyWatch = () => {
-  if (type == 'polyline') {
+  if (type.value == 'polyline') {
     totalPath.forEach((paths, index) => {
       if (paths) {
         let onlywatchPolyline = new AMap.Polyline({
@@ -225,6 +229,7 @@ const onlyWatch = () => {
         })
         map.add(onlywatchPolyline)
 
+        // 点击当前覆盖物开启编辑
         onlywatchPolyline.on('click', function () {
           totalPath[index] = []
           polylineEditor.setTarget(this)
@@ -239,7 +244,7 @@ const onlyWatch = () => {
 
     })
 
-  } else if (type == 'polygon') {
+  } else if (type.value == 'polygon') {
 
     totalPath.forEach((paths, index) => {
       if (paths) {
@@ -301,9 +306,9 @@ onMounted(() => {
   <main>
     <div id='allmap' class='bmap-container'></div>
     <div class="input-card" style="width: 200px">
-      <button class="clearAll" @click="clearAll()">清空地图</button>
+      <button class="clearAll" @click="clearAll()">删除覆盖物</button>
       <!-- <button class="backMap" onclick="backMap()">还原地图</button> -->
-      <button class="finish" @click='finish()'>结束</button>
+      <button class="finish" @click='finish()'>结束编辑</button>
       <button class="save" @click="save()">保存</button>
     </div>
   </main>
