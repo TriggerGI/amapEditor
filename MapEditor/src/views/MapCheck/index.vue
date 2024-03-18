@@ -1,28 +1,25 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 let map = ref('')
-let layer = reactive()
-let selected = reactive()
+let layer = reactive({})
+let selected = reactive({})
 let region = reactive([])
 
 onMounted(() => {
-  init()
+  adapterLoading()
 })
 
 const init = () => {
   let elements = document.getElementsByClassName('bmap-container');
-  // document.querySelector('body').appendChild(strToHtml(str))
   if (elements && elements.length > 0) {
     map = new AMap.Map(elements[0], {
       center: [120.228831, 30.288598],
       zoom: 14.2,
     });
 
-    if (!layer) {
       layer = new AMap.GeoJSON({
-        geoJSON: region.value,
+        geoJSON: region,
         getPolyline: function (geojson, lnglats) {
-          console.log(geojson.properties.type);
           return new AMap.Polyline({
             path: lnglats,
             strokeWeight: 3,
@@ -83,7 +80,6 @@ const init = () => {
         }
       });
 
-    }
 
     map.add(layer);
     // 绑定事件
@@ -92,8 +88,9 @@ const init = () => {
     layer.on('mouseout', out);
     // 覆盖物集合
     let overlaies = layer.getOverlays()
+
+
     overlaies.forEach(item => {
-      console.log(item._opts.extData.type);
       if (item._opts.extData.type == '00') {
         // 解绑边界点击事件并以边界自动缩放
         item.setOptions({
@@ -125,11 +122,11 @@ const creatMask = () => {
     outer
   ];
 
-  // overlaies.forEach(overlay => {
-  //     let inside = overlay.getPath()[0][0]
-  //     console.log('inside', inside);
-  //     pathArray.push(inside)
-  // })
+  overlaies.forEach(overlay => {
+      let inside = overlay.getPath()[0][0]
+      console.log('inside', inside);
+      pathArray.push(inside)
+  })
 
   pathArray.push(edgeArr[0])
 
@@ -218,6 +215,7 @@ const resetlayer = () => {
   }
   // 当前点击的覆盖物
   if (selected) {
+    console.log('selected',selected);
     if (selected.className == 'Overlay.Polyline') {
       selected.setOptions({
         strokeOpacity: 1,
@@ -232,23 +230,15 @@ const resetlayer = () => {
 }
 
 let edgeArr = reactive([])
-adapterLoading()
 // 解析json文件
 const adapterLoading = () => {
-  // const path = '../data/map2.json'
-  const path = 'https://download.langmeta.com/geo/china/330100_1-6.json'
+  const path = '../../../public/static/map.json'
+  // const path = 'https://download.langmeta.com/geo/china/330100_1-6.json'
 
   fetch(path).then(res => {
     return res.json();
   }).then(res => {
     region = res;
-    // region.features.map((item, index) => {
-    //     if (item.properties.type == '00') {
-    //         edgeArr = item.geometry.coordinates[0]
-    //     }
-
-    // });
-    console.log('rl',region);
 
     for (var i = 0; i < region.features.length; i++) {
       if (region.features[i].properties.type == '00') {
@@ -259,6 +249,8 @@ const adapterLoading = () => {
         i--;
       }
     }
+
+    init()
 
   }
   );

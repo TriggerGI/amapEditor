@@ -3,13 +3,15 @@ import { createRouter, createWebHistory ,createWebHashHistory} from 'vue-router'
 import MapCheck from '../views/MapCheck/index.vue'
 import HomeView from '../views/HomeView.vue'
 import MapEditor from '../views/MapEditor/index.vue'
+// import DataScreen from '../views/DataScreen/index.vue'
+
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView,
-    // component: MapEditor,
+    redirect: '/mapeditor',
 
     children:[
       {
@@ -22,8 +24,8 @@ const routes = [
         path: 'mapeditor',
         name: 'mapeditor',
         label:'地图编辑',
-        component: ()=>(MapEditor)
-      }
+        component: MapEditor
+      },
     ]
   },
 

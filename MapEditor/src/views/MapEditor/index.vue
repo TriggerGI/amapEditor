@@ -20,15 +20,10 @@ function init() {
   if (elements && elements.length > 0) {
     map = new AMap.Map(elements[0], {
       center: [120.228831, 30.288598],
-      zoom: 14.2,
+      zoom: 9,
       zIndex: 99
     });
     map.on('click', addMarker)
-
-    totalPath = [[[120.227455, 30.28861], [120.228233, 30.288971], [120.22841, 30.288253]], [[120.229671, 30.288559], [120.230218, 30.288663], [120.229759, 30.28838]]]
-    polylineEditor = new AMap.PolylineEditor(map);
-    polygonEditor = new AMap.PolygonEditor(map);
-    onlyWatch()
   }
 }
 
@@ -115,11 +110,8 @@ const createPolygon = () => {
 // 提交的数据格式
 const submitArr = () => {
   if (type.value == 'polygon') {
-    // targetDom.props.data.geometry = JSON.stringify([newPath])
     console.log('多边形最终数据', save());
   } else if (type.value == 'polyline') {
-    // 二维
-    // targetDom.props.data.geometry = JSON.stringify(newPath)
     console.log('折线最终数据a', save());
   }
 }
@@ -289,16 +281,13 @@ const save = () => {
   return JSON.stringify(totalPath)
 }
 
-
-
-
-
+const savemap = () => {
+  alert(`图形坐标:  ${JSON.stringify(totalPath)}`)
+}
 
 onMounted(() => {
   init()
 })
-
-
 
 </script>
 
@@ -307,9 +296,9 @@ onMounted(() => {
     <div id='allmap' class='bmap-container'></div>
     <div class="input-card" style="width: 200px">
       <button class="clearAll" @click="clearAll()">删除覆盖物</button>
-      <!-- <button class="backMap" onclick="backMap()">还原地图</button> -->
+      <button class="backMap" onclick="backMap()">还原地图</button>
       <button class="finish" @click='finish()'>结束编辑</button>
-      <button class="save" @click="save()">保存</button>
+      <button class="save" @click="savemap()">保存</button>
     </div>
   </main>
 </template>

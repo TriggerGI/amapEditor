@@ -1,29 +1,9 @@
-# mapeditor
+# mapeditor地图编辑demo
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+>可操作项：
+>
+>- 点击空白地图处新建节点，可绘制矢量多边形；
+>
+>- 点击 “结束编辑” 结束当前图形编辑态；
+>- 点击图形开启当前对象编辑，同时可以点击 “删除” 图形；
+>- 点击保存返回当前若干图形的三维坐标数组；
